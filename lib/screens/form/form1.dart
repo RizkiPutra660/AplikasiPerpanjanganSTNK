@@ -29,8 +29,7 @@ class Form1State extends State<Form1> {
               child: Icon(Icons.navigate_next),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  print('oke');
-                  print("${data.nrkb} - ${data.nama}");
+                  print('Form1->Form3, data: ${data.toString()}');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -71,27 +70,27 @@ class Form1State extends State<Form1> {
                 SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama Pemilik',
-                    hintText: 'Sesuaikan dengan STNK',
-                  ),
-                  onChanged: (val) {
-                    setState(() {
-                      data.nama = val;
-                    });
-                  },
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Tidak boleh kosong';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                // TextFormField(
+                //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                //   decoration: const InputDecoration(
+                //     labelText: 'Nama Pemilik',
+                //     hintText: 'Sesuaikan dengan STNK',
+                //   ),
+                //   onChanged: (val) {
+                //     setState(() {
+                //       data.nama = val;
+                //     });
+                //   },
+                //   validator: (val) {
+                //     if (val.isEmpty) {
+                //       return 'Tidak boleh kosong';
+                //     }
+                //     return null;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 20,
+                // ),
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.number,
@@ -115,30 +114,30 @@ class Form1State extends State<Form1> {
                 SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(
-                      labelText: 'Nomor Telepon/HP',
-                      hintText: 'contoh: 0222500935 atau 085814140041',
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        data.noTelp = val;
-                      });
-                    },
-                    validator: (String val) {
-                      // return val.contains('@') ? 'Do not use the @ char.' : null;
-                      Pattern pat = r'(^[0-9]{10,12}$)';
-                      RegExp regex = new RegExp(pat);
-                      if (val.isEmpty) {
-                        return 'Masukkan Nomor Telepon/HP';
-                      } else if (!regex.hasMatch(val)) {
-                        return 'Nomor Telepon/HP tidak valid';
-                      }
-                      return null;
-                    }),
+                // TextFormField(
+                //     autovalidateMode: AutovalidateMode.onUserInteraction,
+                //     keyboardType: TextInputType.number,
+                //     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                //     decoration: const InputDecoration(
+                //       labelText: 'Nomor Telepon/HP',
+                //       hintText: 'contoh: 0222500935 atau 085814140041',
+                //     ),
+                //     onChanged: (val) {
+                //       setState(() {
+                //         data.noTelp = val;
+                //       });
+                //     },
+                //     validator: (String val) {
+                //       // return val.contains('@') ? 'Do not use the @ char.' : null;
+                //       Pattern pat = r'(^[0-9]{10,12}$)';
+                //       RegExp regex = new RegExp(pat);
+                //       if (val.isEmpty) {
+                //         return 'Masukkan Nomor Telepon/HP';
+                //       } else if (!regex.hasMatch(val)) {
+                //         return 'Nomor Telepon/HP tidak valid';
+                //       }
+                //       return null;
+                //     }),
               ],
             ),
           ),

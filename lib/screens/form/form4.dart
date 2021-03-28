@@ -1,4 +1,4 @@
-// Upload STNK
+//Upload BPKB
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -7,28 +7,27 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form5.dart';
 
+// final String baseurl = "https://stnk-api-ta.tech";
+final String baseurl = "http://192.168.1.124:4000";
+
 class Form4 extends StatefulWidget {
   Form4() : super();
-
   final String title = "Upload Image Demo";
-
   @override
   Form4State createState() => Form4State();
 }
 
 class Form4State extends State<Form4> {
-  //
-  static final String uploadEndPoint = 'http://192.168.42.41';
-  Future<File> file;
+  static final String uploadEndPoint =  "$baseurl/api/perpanjangan";
+  Future<File> fileBPKB;
   String status = '';
-  String base64Image;
+  String base64BPKB;
   File tmpFile;
   String errMessage = 'Error Uploading Image';
 
   chooseImage() {
     setState(() {
-      // ignore: deprecated_member_use
-      file = ImagePicker.pickImage(source: ImageSource.gallery);
+      fileBPKB = ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
     });
     setStatus('');
   }
@@ -39,62 +38,61 @@ class Form4State extends State<Form4> {
     });
   }
 
-  startUpload() {
-    setStatus('Uploading Image...');
-    if (null == tmpFile) {
-      setStatus(errMessage);
-      return;
-    }
-    String fileName = tmpFile.path.split('/').last;
-    upload(fileName);
-  }
-
-  upload(String fileName) {
-    http.post(uploadEndPoint, body: {
-      "image": base64Image,
-      "name": fileName,
-    }).then((result) {
-      setStatus(result.statusCode == 200 ? result.body : errMessage);
-    }).catchError((error) {
-      setStatus(error);
-    });
-  }
-
-  Widget showImage() {
-    return FutureBuilder<File>(
-      future: file,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            null != snapshot.data) {
-          tmpFile = snapshot.data;
-          base64Image = base64Encode(snapshot.data.readAsBytesSync());
-          return Flexible(
-            child: Image.file(
-              snapshot.data,
-              fit: BoxFit.fill,
-            ),
-          );
-        } else if (null != snapshot.error) {
-          return const Text(
-            'Error Picking Image',
-            textAlign: TextAlign.center,
-          );
-        } else {
-          return const Text(
-            'No Image Selected',
-            textAlign: TextAlign.center,
-          );
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
+    upload() {
+      print('start uploading');
+      // print(data.toMap());
+      setStatus('Start Uploading...');
+      http
+          .post(
+        uploadEndPoint,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(data.toMap()),
+      )
+          .then((result) {
+        print(result.statusCode);
+        setStatus(result.statusCode == 200 ? "NOICE" : errMessage);
+        // setStatus(result.body);
+      }).catchError((error) {
+        setStatus(error);
+      });
+    }
+
+    Widget showImage(file) {
+      return FutureBuilder<File>(
+        future: file,
+        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              null != snapshot.data) {
+            tmpFile = snapshot.data;
+            data.fotoBPKB = base64Encode(snapshot.data.readAsBytesSync());
+
+            return Image.file(
+              snapshot.data,
+              fit: BoxFit.fill,
+            );
+          } else if (null != snapshot.error) {
+            return Text(
+              'Error Picking Image',
+              textAlign: TextAlign.center,
+            );
+          } else {
+            return Text(
+              'No Image Selected',
+              textAlign: TextAlign.center,
+            );
+          }
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Upload STNK"),
+        title: Text("Upload BPKB"),
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.navigate_next),
@@ -109,49 +107,53 @@ class Form4State extends State<Form4> {
               ),
             );
           }),
-      body: Container(
+      body: ListView(
         padding: EdgeInsets.all(30.0),
-        child: ListView(
-          children: <Widget>[
-            // placeholder
-            Card(
-              child: Text('${data.toMap()}'),
+        children: <Widget>[
+          // placeholder
+          Card(
+            child: Text('${data.toString()}'),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+
+          // Foto BPKB
+          OutlinedButton(
+            onPressed: () {chooseImage();},
+            child: Text('Pilih Foto BPKB'),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          showImage(fileBPKB),
+          SizedBox(
+            height: 20.0,
+          ),
+
+          // Upload
+          OutlinedButton(
+            onPressed: () {
+              upload();
+            },
+            child: Text('Upload Image'),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Text(
+            status,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.w500,
+              fontSize: 20.0,
             ),
-            SizedBox(
-              height: 20.0,
-            ),
-            OutlinedButton(
-              onPressed: chooseImage,
-              child: Text('Choose Image'),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            showImage(),
-            SizedBox(
-              height: 20.0,
-            ),
-            OutlinedButton(
-              onPressed: startUpload,
-              child: Text('Upload Image'),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Text(
-              status,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.w500,
-                fontSize: 20.0,
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+        ],
       ),
     );
   }

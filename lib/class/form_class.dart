@@ -1,32 +1,18 @@
 class FormSTNK {
-  String nrkb;
-  String nama;
-  // ignore: non_constant_identifier_names
-  String nik;
-  String alamat;
-  String jenisKendaraan;
-  String noRangka;
-  String noTelp;
-  String fotoKTP;
-  String fotoSTNK;
-  String fotoBPKB;
-  String fotoNomorRangka;
-  bool sudahBayar;
+  String nrkb, nama, nik, alamat, jenisKendaraan, noRangka, noTelp, fotoKTP, fotoBPKB, fotoSTNK, fotoNomorRangka;
 
   FormSTNK({
     this.nrkb,
     this.nama,
-    // ignore: non_constant_identifier_names
     this.nik,
     this.alamat,
     this.jenisKendaraan,
     this.noRangka,
     this.noTelp,
     this.fotoKTP,
-    this.fotoSTNK,
     this.fotoBPKB,
-    this.fotoNomorRangka,
-    this.sudahBayar,
+    this.fotoSTNK,
+    this.fotoNomorRangka
   });
 
   bool isFull() {
@@ -42,27 +28,36 @@ class FormSTNK {
 
   Map toMap() {
     return {
-      'NRKB': nrkb,
-      'NamaPemilik': nama,
-      'NIK/TDP': nik,
-      'No Telp': noTelp,
-      'Foto KTP': fotoKTP,
+      'nrkb': nrkb,
+      'nama': nama,
+      'nik': nik,
+      'alamat': alamat,
+      'jenisKendaraan': jenisKendaraan,
+      'noRangka': noRangka,
+      'noTelp': noTelp,
+      'fotoKTP': fotoKTP,
+      'fotoBPKB': fotoBPKB,
+      'fotoSTNK': fotoSTNK,
+      'fotoNomorRangka': fotoNomorRangka,
     };
+  }
+
+  String toString({bool nice = true}) {
+    if (nice) {
+      return "NRKB: $nrkb,\nNamaPemilik: $nama,\nNIK/TDP: $nik,\nAlamat: $alamat,\nJenis Kendaraan: $jenisKendaraan,\nNo. Rangka: $noRangka,\nNo. Telp.: $noTelp";
+    }
+    return "NRKB: $nrkb, NamaPemilik: $nama, NIK/TDP: $nik, Alamat: $alamat, Jenis Kendaraan: $jenisKendaraan, No. Rangka: $noRangka, No. Telp.: $noTelp";
   }
 
   factory FormSTNK.fromJson(Map<String, dynamic> json) {
     return FormSTNK(
-        nrkb: json['nrkb'],
-        nama: json['nama'],
-        nik: json['nik'],
-        alamat: json['alamat'],
-        jenisKendaraan: json['jenisKendaraan'],
-        noRangka: json['noRangka'],
-        noTelp: json['noTelp'],
-        fotoKTP: json['fotoKTP'],
-        fotoBPKB: json['fotoBPKB'],
-        fotoNomorRangka: json['fotoNomorRangka'],
-        fotoSTNK: json['fotoSTNK'],
-        sudahBayar: json['sudahBayar']);
+      nrkb: json['nrkb'],
+      nama: json['nama'],
+      nik: json['nik'],
+      alamat: json['alamat'],
+      jenisKendaraan: json['jenisKendaraan'],
+      noRangka: json['noRangka'],
+      noTelp: json['noTelp'],
+    );
   }
 }
