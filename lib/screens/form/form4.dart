@@ -6,9 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form5.dart';
-
-// final String baseurl = "https://stnk-api-ta.tech";
-final baseurl = "http://192.168.174.140:4000";
+import 'package:sambara/class/endpoint.dart';
+final baseurl = Endpoint().endpoint;
 
 class Form4 extends StatefulWidget {
   Form4() : super();

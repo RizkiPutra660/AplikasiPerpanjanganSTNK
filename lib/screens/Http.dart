@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form3.dart';
-
-// final baseurl = "https://stnk-api-ta.tech";
-final baseurl = "http://192.168.174.140:4000";
+import 'package:sambara/class/endpoint.dart';
+final baseurl = Endpoint().endpoint;
 
 class Http extends StatefulWidget {
   @override
   HttpState createState() {
+    print("endpoint");
+    print(baseurl);
+    print('ok');
     return HttpState();
   }
 }
