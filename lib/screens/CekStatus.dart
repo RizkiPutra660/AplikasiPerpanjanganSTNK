@@ -42,12 +42,16 @@ class CekStatusState extends State<CekStatus> {
                   ));
             }
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                "NRKB tidak terdaftar",
-                textAlign: TextAlign.center,
-              ),
-            );
+            return Container(
+                padding: EdgeInsets.all(30.0),
+                child: ListView(
+                  children: <Widget>[
+                    Text(
+                      "NRKB tidak terdaftar",
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ));
           }
           return CircularProgressIndicator();
         });

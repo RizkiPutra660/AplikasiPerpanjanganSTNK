@@ -8,7 +8,7 @@ import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/Form6.dart';
 
 // final String baseurl = "https://stnk-api-ta.tech";
-final String baseurl = "http://192.168.1.124:4000";
+final baseurl = "http://192.168.174.140:4000";
 
 class Form5 extends StatefulWidget {
   Form5() : super();
@@ -18,7 +18,7 @@ class Form5 extends StatefulWidget {
 }
 
 class Form5State extends State<Form5> {
-  static final String uploadEndPoint =  "$baseurl/api/perpanjangan";
+  static final String uploadEndPoint = "$baseurl/api/perpanjangan";
   Future<File> fileSTNK;
   String status = '';
   String base64STNK;
@@ -27,7 +27,8 @@ class Form5State extends State<Form5> {
 
   chooseImage() {
     setState(() {
-      fileSTNK = ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      fileSTNK = ImagePicker.pickImage(
+          source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
     });
     setStatus('');
   }
@@ -120,7 +121,9 @@ class Form5State extends State<Form5> {
 
           // Foto STNK
           OutlinedButton(
-            onPressed: () {chooseImage();},
+            onPressed: () {
+              chooseImage();
+            },
             child: Text('Pilih Foto STNK'),
           ),
           SizedBox(

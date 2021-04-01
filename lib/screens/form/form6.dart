@@ -8,7 +8,7 @@ import 'package:sambara/class/form_class.dart';
 // import 'package:sambara/screens/form/Form6.dart';
 
 // final String baseurl = "https://NomorRangka-api-ta.tech";
-final String baseurl = "http://192.168.1.124:4000";
+final baseurl = "http://192.168.174.140:4000";
 
 class Form6 extends StatefulWidget {
   Form6() : super();
@@ -18,7 +18,7 @@ class Form6 extends StatefulWidget {
 }
 
 class Form6State extends State<Form6> {
-  static final String uploadEndPoint =  "$baseurl/api/perpanjangan";
+  static final String uploadEndPoint = "$baseurl/api/perpanjangan";
   Future<File> fileNomorRangka;
   String status = '';
   String base64NomorRangka;
@@ -27,7 +27,8 @@ class Form6State extends State<Form6> {
 
   chooseImage() {
     setState(() {
-      fileNomorRangka = ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      fileNomorRangka = ImagePicker.pickImage(
+          source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
     });
     setStatus('');
   }
@@ -69,7 +70,8 @@ class Form6State extends State<Form6> {
           if (snapshot.connectionState == ConnectionState.done &&
               null != snapshot.data) {
             tmpFile = snapshot.data;
-            data.fotoNomorRangka = base64Encode(snapshot.data.readAsBytesSync());
+            data.fotoNomorRangka =
+                base64Encode(snapshot.data.readAsBytesSync());
 
             return Image.file(
               snapshot.data,
@@ -107,7 +109,9 @@ class Form6State extends State<Form6> {
 
           // Foto NomorRangka
           OutlinedButton(
-            onPressed: () {chooseImage();},
+            onPressed: () {
+              chooseImage();
+            },
             child: Text('Pilih Foto NomorRangka'),
           ),
           SizedBox(

@@ -5,7 +5,7 @@ import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form3.dart';
 
 // final baseurl = "https://stnk-api-ta.tech";
-final baseurl = "http://192.168.1.124:4000";
+final baseurl = "http://192.168.174.140:4000";
 
 class Http extends StatefulWidget {
   @override
@@ -39,6 +39,7 @@ class HttpState extends State<Http> {
         throw Exception();
       }
     }
+
     return FutureBuilder<FormSTNK>(
         future: getData(),
         builder: (context, snapshot) {

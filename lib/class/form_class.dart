@@ -1,19 +1,30 @@
 class FormSTNK {
-  String nrkb, nama, nik, alamat, jenisKendaraan, noRangka, noTelp, fotoKTP, fotoBPKB, fotoSTNK, fotoNomorRangka;
+  String nrkb,
+      nama,
+      nik,
+      alamat,
+      jenisKendaraan,
+      noRangka,
+      noTelp,
+      fotoKTP,
+      fotoBPKB,
+      fotoSTNK,
+      fotoNomorRangka;
+  bool sudahBayar;
 
-  FormSTNK({
-    this.nrkb,
-    this.nama,
-    this.nik,
-    this.alamat,
-    this.jenisKendaraan,
-    this.noRangka,
-    this.noTelp,
-    this.fotoKTP,
-    this.fotoBPKB,
-    this.fotoSTNK,
-    this.fotoNomorRangka
-  });
+  FormSTNK(
+      {this.nrkb,
+      this.nama,
+      this.nik,
+      this.alamat,
+      this.jenisKendaraan,
+      this.noRangka,
+      this.noTelp,
+      this.fotoKTP,
+      this.fotoBPKB,
+      this.fotoSTNK,
+      this.fotoNomorRangka,
+      this.sudahBayar});
 
   bool isFull() {
     int _cnt = 0;
@@ -58,6 +69,7 @@ class FormSTNK {
       jenisKendaraan: json['jenisKendaraan'],
       noRangka: json['noRangka'],
       noTelp: json['noTelp'],
+      sudahBayar: json['sudahBayar'],
     );
   }
 }

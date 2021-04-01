@@ -8,7 +8,7 @@ import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form4.dart';
 
 // final String baseurl = "https://stnk-api-ta.tech";
-final String baseurl = "http://192.168.1.124:4000";
+final baseurl = "http://192.168.174.140:4000";
 
 class Form3 extends StatefulWidget {
   Form3() : super();
@@ -18,7 +18,7 @@ class Form3 extends StatefulWidget {
 }
 
 class Form3State extends State<Form3> {
-  static final String uploadEndPoint =  "$baseurl/api/perpanjangan";
+  static final String uploadEndPoint = "$baseurl/api/perpanjangan";
   Future<File> fileKTP;
   String status = '';
   String base64KTP;
@@ -27,7 +27,8 @@ class Form3State extends State<Form3> {
 
   chooseImage() {
     setState(() {
-      fileKTP = ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      fileKTP = ImagePicker.pickImage(
+          source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
     });
     setStatus('');
   }
@@ -46,7 +47,8 @@ class Form3State extends State<Form3> {
       // print(data.toMap());
       setStatus('Start Uploading...');
       print(jsonEncode(data.toMap()));
-      http.post(
+      http
+          .post(
         uploadEndPoint,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -120,7 +122,9 @@ class Form3State extends State<Form3> {
 
           // Foto KTP
           OutlinedButton(
-            onPressed: () {chooseImage();},
+            onPressed: () {
+              chooseImage();
+            },
             child: Text('Pilih Foto KTP'),
           ),
           SizedBox(

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:sambara/screens/form/form1.dart';
 import 'package:sambara/screens/pdf_viewers.dart';
+import 'package:sambara/screens/form/FormCekStatus.dart';
 
 const String PanduanPDF = 'PDF/Panduan.pdf';
 const String FAQPDF = 'PDF/FAQ.pdf';
@@ -16,10 +17,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   Future<String> preparePdf(String _documentPath) async {
     final ByteData bytes =
-    await DefaultAssetBundle.of(context).load(_documentPath);
+        await DefaultAssetBundle.of(context).load(_documentPath);
     final Uint8List list = bytes.buffer.asUint8List();
     final tempDir = await getTemporaryDirectory();
     final tempDocumentPath = '${tempDir.path}/$_documentPath';
@@ -44,10 +44,15 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   Column(children: <Widget>[
                     TextButton(
-                        child: Image.asset('Gambar/Pengisian Form.jpg', height: 150.0,  width: 150.0,),
+                        child: Image.asset(
+                          'Gambar/Pengisian Form.jpg',
+                          height: 150.0,
+                          width: 150.0,
+                        ),
                         onPressed: () {
                           print('Form');
-                          Navigator.push(context,
+                          Navigator.push(
+                            context,
                             MaterialPageRoute(
                               builder: (context) => Form1(),
                             ),
@@ -57,9 +62,19 @@ class _HomeState extends State<Home> {
                   ]),
                   Column(children: <Widget>[
                     TextButton(
-                        child: Image.asset('Gambar/Cek Status.jpg', height: 150.0, width: 150.0,),
+                        child: Image.asset(
+                          'Gambar/Cek Status.jpg',
+                          height: 150.0,
+                          width: 150.0,
+                        ),
                         onPressed: () {
                           print('Status');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FormCekStatus(),
+                            ),
+                          );
                         }),
                     Text('Cek Status')
                   ]),
@@ -69,14 +84,22 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   Column(children: <Widget>[
                     TextButton(
-                      child: Image.asset('Gambar/Bantuan.jpg', height: 150.0, width: 150.0,),
+                      child: Image.asset(
+                        'Gambar/Bantuan.jpg',
+                        height: 150.0,
+                        width: 150.0,
+                      ),
                       onPressed: () {
                         print('Bantuan');
                         // take String FAQPDF as input, output -> path
                         preparePdf(FAQPDF).then((path) {
-                          Navigator.push(context,
+                          Navigator.push(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) => PDFViewer(path: path, title: "Frequently Asked Questions",),
+                              builder: (context) => PDFViewer(
+                                path: path,
+                                title: "Frequently Asked Questions",
+                              ),
                             ),
                           );
                         });
@@ -86,14 +109,22 @@ class _HomeState extends State<Home> {
                   ]),
                   Column(children: <Widget>[
                     TextButton(
-                      child: Image.asset('Gambar/Panduan.jpg', height: 150.0, width: 150.0,),
+                      child: Image.asset(
+                        'Gambar/Panduan.jpg',
+                        height: 150.0,
+                        width: 150.0,
+                      ),
                       onPressed: () {
                         print('Panduan');
                         // take String PanduanPDF as input, output -> path
                         preparePdf(PanduanPDF).then((path) {
-                          Navigator.push(context,
+                          Navigator.push(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) => PDFViewer(path: path, title: "Panduan Perpanjangan",),
+                              builder: (context) => PDFViewer(
+                                path: path,
+                                title: "Panduan Perpanjangan",
+                              ),
                             ),
                           );
                         });
@@ -108,4 +139,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
