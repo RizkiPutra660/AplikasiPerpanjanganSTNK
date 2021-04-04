@@ -50,7 +50,6 @@ class _HomeState extends State<Home> {
                           width: 150.0,
                         ),
                         onPressed: () {
-                          print('Form');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -68,7 +67,6 @@ class _HomeState extends State<Home> {
                           width: 150.0,
                         ),
                         onPressed: () {
-                          print('Status');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -90,8 +88,6 @@ class _HomeState extends State<Home> {
                         width: 150.0,
                       ),
                       onPressed: () {
-                        print('Bantuan');
-                        // take String FAQPDF as input, output -> path
                         preparePdf(FAQPDF).then((path) {
                           Navigator.push(
                             context,
@@ -115,8 +111,6 @@ class _HomeState extends State<Home> {
                         width: 150.0,
                       ),
                       onPressed: () {
-                        print('Panduan');
-                        // take String PanduanPDF as input, output -> path
                         preparePdf(PanduanPDF).then((path) {
                           Navigator.push(
                             context,
