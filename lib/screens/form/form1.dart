@@ -4,10 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/Http.dart';
 
-
 FormSTNK data = FormSTNK();
 
-// Define a custom Form widget.
 class Form1 extends StatefulWidget {
   @override
   Form1State createState() {
@@ -59,7 +57,6 @@ class Form1State extends State<Form1> {
                     });
                   },
                   validator: (String val) {
-                    // return val.contains('@') ? 'Do not use the @ char.' : null;
                     Pattern pat = r'^[A-Z]{1,2}\s[1-9][0-9]{1,3}\s[A-Z]{1,3}$';
                     RegExp regex = new RegExp(pat);
                     if (!regex.hasMatch(val))

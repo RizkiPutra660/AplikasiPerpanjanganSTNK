@@ -9,7 +9,8 @@ class FormSTNK {
       fotoKTP,
       fotoBPKB,
       fotoSTNK,
-      fotoNomorRangka;
+      fotoNomorRangka,
+      id;
   bool sudahBayar;
 
   FormSTNK(
@@ -24,7 +25,8 @@ class FormSTNK {
       this.fotoBPKB,
       this.fotoSTNK,
       this.fotoNomorRangka,
-      this.sudahBayar});
+      this.sudahBayar,
+      this.id});
 
   bool isFull() {
     int _cnt = 0;
@@ -50,6 +52,7 @@ class FormSTNK {
       'fotoBPKB': fotoBPKB,
       'fotoSTNK': fotoSTNK,
       'fotoNomorRangka': fotoNomorRangka,
+      'id': id,
     };
   }
 
@@ -70,6 +73,7 @@ class FormSTNK {
       noRangka: json['noRangka'],
       noTelp: json['noTelp'],
       sudahBayar: json['sudahBayar'],
+      id: json['_id'],
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form4.dart';
 import 'package:sambara/class/endpoint.dart';
+
 final baseurl = Endpoint().endpoint;
 
 class Form3 extends StatefulWidget {
@@ -22,7 +23,10 @@ class Form3State extends State<Form3> {
   String status = '';
   String base64KTP;
   File tmpFile;
-  String errMessage = 'Error Uploading Image';
+  String errMessage = 'Pengunggahan Gambar Gagal';
+  String succMessage = 'Gambar Berhasil Diunggah';
+  List users;
+  bool isLoading = false;
 
   chooseImage() {
     setState(() {
@@ -41,26 +45,63 @@ class Form3State extends State<Form3> {
   @override
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
-    upload() {
-      print('start uploading');
-      // print(data.toMap());
-      setStatus('Start Uploading...');
-      print(jsonEncode(data.toMap()));
-      http
-          .post(
-        uploadEndPoint,
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(data.toMap()),
-      )
-          .then((result) {
-        print(result.statusCode);
-        setStatus(result.statusCode == 200 ? "NOICE" : errMessage);
-        // setStatus(result.body);
-      }).catchError((error) {
-        setStatus(error);
+    fetchUser() async {
+      setState(() {
+        isLoading = true;
       });
+      var url = "$baseurl/api/perpanjangan?nrkb=${data.nrkb}";
+      var response = await http.get(url);
+      // print(response.body);
+      if (response.statusCode == 200) {
+        var items = json.decode(response.body);
+        setState(() {
+          return users = items;
+          //isLoading = false;
+        });
+      } else {
+        users = null;
+        isLoading = false;
+      }
+    }
+
+    upload() {
+      fetchUser();
+      print('start uploading');
+
+      setStatus('Start Uploading...');
+      if (users == null) {
+        http
+            .post(
+          uploadEndPoint,
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(data.toMap()),
+        )
+            .then((result) {
+          print(result.statusCode);
+          setStatus(result.statusCode == 200 ? succMessage : errMessage);
+          // setStatus(result.body);
+        }).catchError((error) {
+          setStatus(error);
+        });
+      } else if (users != null) {
+        http
+            .put(
+          "$baseurl/api/perpanjangan/${users[0]['_id']}",
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(data.toMap()),
+        )
+            .then((result) {
+          print(result.statusCode);
+          setStatus(result.statusCode == 200 ? succMessage : errMessage);
+          // setStatus(result.body);
+        }).catchError((error) {
+          setStatus(error);
+        });
+      }
     }
 
     Widget showImage(file) {
@@ -71,7 +112,6 @@ class Form3State extends State<Form3> {
               null != snapshot.data) {
             tmpFile = snapshot.data;
             data.fotoKTP = base64Encode(snapshot.data.readAsBytesSync());
-
             return Image.file(
               snapshot.data,
               fit: BoxFit.fill,
@@ -119,12 +159,12 @@ class Form3State extends State<Form3> {
             height: 20.0,
           ),
 
-          // Foto KTP
+          // Foto BPKB
           OutlinedButton(
             onPressed: () {
               chooseImage();
             },
-            child: Text('Pilih Foto KTP'),
+            child: Text('Ambil Foto KTP'),
           ),
           SizedBox(
             height: 20.0,
@@ -139,7 +179,7 @@ class Form3State extends State<Form3> {
             onPressed: () {
               upload();
             },
-            child: Text('Upload Image'),
+            child: Text('Unggah Gambar'),
           ),
           SizedBox(
             height: 20.0,
