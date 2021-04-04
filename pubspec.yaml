@@ -29,6 +29,7 @@ dependencies:
   http:
   image_picker:
   get_it:
+  image:
 
 
   # The following adds the Cupertino Icons font to your application.
