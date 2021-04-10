@@ -7,8 +7,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/class/endpoint.dart';
 import 'package:sambara/screens/SelesaiPendaftaran.dart';
+import 'package:sambara/mapper.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as im;
 
-final baseurl = Endpoint().endpoint;
+Directory directory;
+String appDocumentsDirectory;
+String savepath;
+String mappedsavepath;
+String baseurl = Endpoint().endpoint;
+Future<List> futureMap;
+String filecache="cache4.png";
+String mappedcache="cacheM4.png";
 
 class Form6 extends StatefulWidget {
   Form6() : super();
@@ -28,12 +38,28 @@ class Form6State extends State<Form6> {
   List users;
   bool isLoading = false;
 
-  chooseImage() {
+  chooseImage() async{
     setState(() {
       fileNomorRangka = ImagePicker.pickImage(
           source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
     });
     setStatus('');
+
+    await getTemporaryDirectory().then((value) => directory = value);
+    appDocumentsDirectory = directory.path;
+    print(appDocumentsDirectory);
+    savepath =  appDocumentsDirectory + "/" + filecache;
+    mappedsavepath =  appDocumentsDirectory + "/" + mappedcache;
+    print(savepath);
+    print(mappedsavepath);
+
+    await fileNomorRangka.then((value) => tmpFile = value);
+    im.Image image = im.grayscale(im.decodeImage(tmpFile.readAsBytesSync()));
+    File(savepath).writeAsBytesSync(im.encodePng(image));
+    List map;
+    await futureMap.then((value) => map = value);
+    im.Image mapped = mapping(image, map);
+    File(mappedsavepath).writeAsBytesSync(im.encodePng(mapped));
   }
 
   setStatus(String message) {
@@ -43,6 +69,13 @@ class Form6State extends State<Form6> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    print("init");
+    // fetchMap().then((value) => futureMap = value);
+    futureMap = fetchMap();
+    baseurl = Endpoint().endpoint;
+  }
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
     fetchUser() async {
@@ -111,8 +144,8 @@ class Form6State extends State<Form6> {
           if (snapshot.connectionState == ConnectionState.done &&
               null != snapshot.data) {
             tmpFile = snapshot.data;
-            data.fotoNomorRangka =
-                base64Encode(snapshot.data.readAsBytesSync());
+            data.fotoNomorRangka = base64Encode(File(mappedsavepath).readAsBytesSync());
+            // data.fotoNomorRangka = base64Encode(snapshot.data.readAsBytesSync());
             return Image.file(
               snapshot.data,
               fit: BoxFit.fill,
@@ -162,8 +195,8 @@ class Form6State extends State<Form6> {
 
           // Foto NomorRangka
           OutlinedButton(
-            onPressed: () {
-              chooseImage();
+            onPressed: () async {
+              await chooseImage();
             },
             child: Text('Ambil Foto NomorRangka'),
           ),
