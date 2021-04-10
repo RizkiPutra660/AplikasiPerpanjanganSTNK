@@ -97,11 +97,10 @@ class Form4State extends State<Form4> {
       }
     }
 
-    upload() {
-      fetchUser();
+    upload() async {
       print('start uploading');
-
       setStatus('Start Uploading...');
+      await fetchUser();
       if (users == null) {
         http
             .post(
