@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/class/endpoint.dart';
+import 'package:sambara/screens/SelesaiPendaftaran.dart';
 
 final baseurl = Endpoint().endpoint;
 
@@ -135,6 +136,19 @@ class Form6State extends State<Form6> {
       appBar: AppBar(
         title: Text("Upload NomorRangka"),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.navigate_next),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Selesai(),
+                settings: RouteSettings(
+                  arguments: data,
+                ),
+              ),
+            );
+          }),
       body: ListView(
         padding: EdgeInsets.all(30.0),
         children: <Widget>[
