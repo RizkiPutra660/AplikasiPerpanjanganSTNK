@@ -194,8 +194,8 @@ class Form3State extends State<Form3> {
 
           // Foto BPKB
           OutlinedButton(
-            onPressed: () {
-              chooseImage();
+            onPressed: () async {
+              await chooseImage();
             },
             child: Text('Ambil Foto KTP'),
           ),

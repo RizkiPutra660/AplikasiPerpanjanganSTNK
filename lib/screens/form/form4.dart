@@ -194,8 +194,8 @@ class Form4State extends State<Form4> {
 
           // Foto BPKB
           OutlinedButton(
-            onPressed: () {
-              chooseImage();
+            onPressed: () async {
+              await chooseImage();
             },
             child: Text('Ambil Foto BPKB'),
           ),

@@ -194,8 +194,8 @@ class Form5State extends State<Form5> {
 
           // Foto STNK
           OutlinedButton(
-            onPressed: () {
-              chooseImage();
+            onPressed: () async {
+              await chooseImage();
             },
             child: Text('Ambil Foto STNK'),
           ),
