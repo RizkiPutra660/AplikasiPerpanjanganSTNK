@@ -17,8 +17,8 @@ String savepath;
 String mappedsavepath;
 String baseurl = Endpoint().endpoint;
 Future<List> futureMap;
-String filecache="cache3.png";
-String mappedcache="cacheM3.png";
+String filecache = "cache3.png";
+String mappedcache = "cacheM3.png";
 
 class Form5 extends StatefulWidget {
   Form5() : super();
@@ -38,7 +38,7 @@ class Form5State extends State<Form5> {
   List users;
   bool isLoading = false;
 
-  chooseImage() async{
+  chooseImage() async {
     setState(() {
       fileSTNK = ImagePicker.pickImage(
           source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
@@ -48,8 +48,8 @@ class Form5State extends State<Form5> {
     await getTemporaryDirectory().then((value) => directory = value);
     appDocumentsDirectory = directory.path;
     print(appDocumentsDirectory);
-    savepath =  appDocumentsDirectory + "/" + filecache;
-    mappedsavepath =  appDocumentsDirectory + "/" + mappedcache;
+    savepath = appDocumentsDirectory + "/" + filecache;
+    mappedsavepath = appDocumentsDirectory + "/" + mappedcache;
     print(savepath);
     print(mappedsavepath);
 
@@ -76,6 +76,7 @@ class Form5State extends State<Form5> {
     futureMap = fetchMap();
     baseurl = Endpoint().endpoint;
   }
+
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
     fetchUser() async {
@@ -97,7 +98,7 @@ class Form5State extends State<Form5> {
       }
     }
 
-    upload() async{
+    upload() async {
       print('start uploading');
       setStatus('Start Uploading...');
       await fetchUser();
@@ -143,7 +144,8 @@ class Form5State extends State<Form5> {
           if (snapshot.connectionState == ConnectionState.done &&
               null != snapshot.data) {
             tmpFile = snapshot.data;
-            data.fotoSTNK = base64Encode(File(mappedsavepath).readAsBytesSync());
+            data.fotoSTNK =
+                base64Encode(File(mappedsavepath).readAsBytesSync());
             // data.fotoSTNK = base64Encode(snapshot.data.readAsBytesSync());
             return Image.file(
               snapshot.data,
@@ -171,6 +173,7 @@ class Form5State extends State<Form5> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.navigate_next),
           onPressed: () {
+            upload();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -208,12 +211,12 @@ class Form5State extends State<Form5> {
           ),
 
           // Upload
-          OutlinedButton(
-            onPressed: () {
-              upload();
-            },
-            child: Text('Unggah Gambar'),
-          ),
+          // OutlinedButton(
+          //   onPressed: () {
+          //     upload();
+          //   },
+          //   child: Text('Unggah Gambar'),
+          // ),
           SizedBox(
             height: 20.0,
           ),

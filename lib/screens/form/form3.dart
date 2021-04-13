@@ -17,8 +17,8 @@ String savepath;
 String mappedsavepath;
 String baseurl = Endpoint().endpoint;
 Future<List> futureMap;
-String filecache="cache1.png";
-String mappedcache="cacheM1.png";
+String filecache = "cache1.png";
+String mappedcache = "cacheM1.png";
 
 class Form3 extends StatefulWidget {
   Form3() : super();
@@ -38,7 +38,7 @@ class Form3State extends State<Form3> {
   List users;
   bool isLoading = false;
 
-  chooseImage() async{
+  chooseImage() async {
     setState(() {
       fileKTP = ImagePicker.pickImage(
           source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
@@ -48,8 +48,8 @@ class Form3State extends State<Form3> {
     await getTemporaryDirectory().then((value) => directory = value);
     appDocumentsDirectory = directory.path;
     print(appDocumentsDirectory);
-    savepath =  appDocumentsDirectory + "/" + filecache;
-    mappedsavepath =  appDocumentsDirectory + "/" + mappedcache;
+    savepath = appDocumentsDirectory + "/" + filecache;
+    mappedsavepath = appDocumentsDirectory + "/" + mappedcache;
     print(savepath);
     print(mappedsavepath);
 
@@ -76,6 +76,7 @@ class Form3State extends State<Form3> {
     futureMap = fetchMap();
     baseurl = Endpoint().endpoint;
   }
+
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
     fetchUser() async {
@@ -97,7 +98,7 @@ class Form3State extends State<Form3> {
       }
     }
 
-    upload() async{
+    upload() async {
       print('start uploading');
       setStatus('Start Uploading...');
       await fetchUser();
@@ -171,6 +172,7 @@ class Form3State extends State<Form3> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.navigate_next),
           onPressed: () {
+            upload();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -208,12 +210,12 @@ class Form3State extends State<Form3> {
           ),
 
           // Upload
-          OutlinedButton(
-            onPressed: () {
-              upload();
-            },
-            child: Text('Unggah Gambar'),
-          ),
+          // OutlinedButton(
+          //   onPressed: () {
+          //     upload();
+          //   },
+          //   child: Text('Unggah Gambar'),
+          // ),
           SizedBox(
             height: 20.0,
           ),

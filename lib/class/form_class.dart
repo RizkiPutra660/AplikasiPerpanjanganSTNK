@@ -58,9 +58,9 @@ class FormSTNK {
 
   String toString({bool nice = true}) {
     if (nice) {
-      return "NRKB: $nrkb,\nNamaPemilik: $nama,\nNIK/TDP: $nik,\nAlamat: $alamat,\nJenis Kendaraan: $jenisKendaraan,\nNo. Rangka: $noRangka,\nNo. Telp.: $noTelp";
+      return "NRKB: $nrkb,\nNamaPemilik: $nama,\nNIK/TDP: $nik,\nAlamat: $alamat,\nJenis Kendaraan: $jenisKendaraan,\nNo. Rangka: $noRangka";
     }
-    return "NRKB: $nrkb, NamaPemilik: $nama, NIK/TDP: $nik, Alamat: $alamat, Jenis Kendaraan: $jenisKendaraan, No. Rangka: $noRangka, No. Telp.: $noTelp";
+    return "NRKB: $nrkb, NamaPemilik: $nama, NIK/TDP: $nik, Alamat: $alamat, Jenis Kendaraan: $jenisKendaraan, No. Rangka: $noRangka";
   }
 
   factory FormSTNK.fromJson(Map<String, dynamic> json) {

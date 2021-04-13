@@ -17,8 +17,8 @@ String savepath;
 String mappedsavepath;
 String baseurl = Endpoint().endpoint;
 Future<List> futureMap;
-String filecache="cache2.png";
-String mappedcache="cacheM2.png";
+String filecache = "cache2.png";
+String mappedcache = "cacheM2.png";
 
 class Form4 extends StatefulWidget {
   Form4() : super();
@@ -38,7 +38,7 @@ class Form4State extends State<Form4> {
   List users;
   bool isLoading = false;
 
-  chooseImage() async{
+  chooseImage() async {
     setState(() {
       fileBPKB = ImagePicker.pickImage(
           source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
@@ -48,8 +48,8 @@ class Form4State extends State<Form4> {
     await getTemporaryDirectory().then((value) => directory = value);
     appDocumentsDirectory = directory.path;
     print(appDocumentsDirectory);
-    savepath =  appDocumentsDirectory + "/" + filecache;
-    mappedsavepath =  appDocumentsDirectory + "/" + mappedcache;
+    savepath = appDocumentsDirectory + "/" + filecache;
+    mappedsavepath = appDocumentsDirectory + "/" + mappedcache;
     print(savepath);
     print(mappedsavepath);
 
@@ -76,6 +76,7 @@ class Form4State extends State<Form4> {
     futureMap = fetchMap();
     baseurl = Endpoint().endpoint;
   }
+
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
     fetchUser() async {
@@ -143,7 +144,8 @@ class Form4State extends State<Form4> {
           if (snapshot.connectionState == ConnectionState.done &&
               null != snapshot.data) {
             tmpFile = snapshot.data;
-            data.fotoBPKB = base64Encode(File(mappedsavepath).readAsBytesSync());
+            data.fotoBPKB =
+                base64Encode(File(mappedsavepath).readAsBytesSync());
             // data.fotoBPKB = base64Encode(snapshot.data.readAsBytesSync());
             return Image.file(
               snapshot.data,
@@ -171,6 +173,7 @@ class Form4State extends State<Form4> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.navigate_next),
           onPressed: () {
+            upload();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -208,12 +211,12 @@ class Form4State extends State<Form4> {
           ),
 
           // Upload
-          OutlinedButton(
-            onPressed: () {
-              upload();
-            },
-            child: Text('Unggah Gambar'),
-          ),
+          // OutlinedButton(
+          //   onPressed: () {
+          //     upload();
+          //   },
+          //   child: Text('Unggah Gambar'),
+          // ),
           SizedBox(
             height: 20.0,
           ),
