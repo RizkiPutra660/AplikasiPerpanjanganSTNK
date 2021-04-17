@@ -77,6 +77,7 @@ def eA(filePath):
 
 def dA(filePath):
     print("\nEn Arnold")
+    start_time = time.time()
     fileName = os.path.split(filePath)[-1]
     fileName = fileName.split(".")[0]
     # path reader
@@ -91,7 +92,7 @@ def dA(filePath):
     tmp = part_joiner(arnoldList, sp)
     # saver
     savepath = IMSaver(tmp, fileName+"_dA")
-    print('\nArnold ended')
+    print('\nArnold ended {}'.format(time.time()-start_time))
     return savepath
 
 def aA(filePath):
