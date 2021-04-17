@@ -24,7 +24,7 @@ class CekStatusState extends State<CekStatus> {
                   child: ListView(
                     children: <Widget>[
                       Text(
-                        "Pendaftaran anda sudah terverifikasi",
+                        "Pendaftaran anda sudah terverifikasi oleh administrator",
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -35,7 +35,7 @@ class CekStatusState extends State<CekStatus> {
                   child: ListView(
                     children: <Widget>[
                       Text(
-                        "Pendaftaran anda belum terverifikasi",
+                        "Pendaftaran anda belum terverifikasi oleh administrator",
                         textAlign: TextAlign.center,
                       ),
                     ],
