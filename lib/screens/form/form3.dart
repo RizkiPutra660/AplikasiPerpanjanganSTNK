@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/form/form4.dart';
@@ -19,6 +18,8 @@ String baseurl = Endpoint().endpoint;
 Future<List> futureMap;
 String filecache = "cache1.png";
 String mappedcache = "cacheM1.png";
+bool isVisible = false;
+String ambilTeks = 'Ambil Foto KTP';
 
 class Form3 extends StatefulWidget {
   Form3() : super();
@@ -42,6 +43,8 @@ class Form3State extends State<Form3> {
     setState(() {
       fileKTP = ImagePicker.pickImage(
           source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      isVisible = true;
+      ambilTeks = 'Ambil Ulang Foto KTP';
     });
     setStatus('');
 
@@ -79,63 +82,7 @@ class Form3State extends State<Form3> {
 
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
-    fetchUser() async {
-      setState(() {
-        isLoading = true;
-      });
-      var url = "$baseurl/api/perpanjangan?nrkb=${data.nrkb}";
-      var response = await http.get(url);
-      // print(response.body);
-      if (response.statusCode == 200) {
-        var items = json.decode(response.body);
-        setState(() {
-          return users = items;
-          //isLoading = false;
-        });
-      } else {
-        users = null;
-        isLoading = false;
-      }
-    }
 
-    upload() async {
-      print('start uploading');
-      setStatus('Start Uploading...');
-      await fetchUser();
-      if (users == null) {
-        http
-            .post(
-          uploadEndPoint,
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(data.toMap()),
-        )
-            .then((result) {
-          print(result.statusCode);
-          setStatus(result.statusCode == 200 ? succMessage : errMessage);
-          // setStatus(result.body);
-        }).catchError((error) {
-          setStatus(error);
-        });
-      } else if (users != null) {
-        http
-            .put(
-          "$baseurl/api/perpanjangan/${users[0]['_id']}",
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(data.toMap()),
-        )
-            .then((result) {
-          print(result.statusCode);
-          setStatus(result.statusCode == 200 ? succMessage : errMessage);
-          // setStatus(result.body);
-        }).catchError((error) {
-          setStatus(error);
-        });
-      }
-    }
 
     Widget showImage(file) {
       return FutureBuilder<File>(
@@ -169,20 +116,23 @@ class Form3State extends State<Form3> {
       appBar: AppBar(
         title: Text("Upload KTP"),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.navigate_next),
-          onPressed: () {
-            upload();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Form4(),
-                settings: RouteSettings(
-                  arguments: data,
+      floatingActionButton: Visibility(
+        visible: isVisible,
+        child: FloatingActionButton.extended(
+            icon: Icon(Icons.navigate_next),
+            label: Text('Selanjutnya'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Form4(),
+                  settings: RouteSettings(
+                    arguments: data,
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
       body: ListView(
         padding: EdgeInsets.all(30.0),
         children: <Widget>[
@@ -199,7 +149,7 @@ class Form3State extends State<Form3> {
             onPressed: () async {
               await chooseImage();
             },
-            child: Text('Ambil Foto KTP'),
+            child: Text(ambilTeks),
           ),
           SizedBox(
             height: 20.0,

@@ -78,7 +78,21 @@ class HttpState extends State<Http> {
               textAlign: TextAlign.center,
             );
           }
-          return CircularProgressIndicator();
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              )
+            ],
+          );
         });
   }
 }
