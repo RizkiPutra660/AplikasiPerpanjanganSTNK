@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/class/endpoint.dart';
@@ -19,6 +18,8 @@ String baseurl = Endpoint().endpoint;
 Future<List> futureMap;
 String filecache = "cache4.png";
 String mappedcache = "cacheM4.png";
+bool isVisible = false;
+String ambilTeks = 'Ambil Foto Nomor Rangka';
 
 class Form6 extends StatefulWidget {
   Form6() : super();
@@ -42,6 +43,8 @@ class Form6State extends State<Form6> {
     setState(() {
       fileNomorRangka = ImagePicker.pickImage(
           source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      isVisible = true;
+      ambilTeks = 'Ambil Ulang Foto Nomor Rangka';
     });
     setStatus('');
 
@@ -79,63 +82,6 @@ class Form6State extends State<Form6> {
 
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
-    fetchUser() async {
-      setState(() {
-        isLoading = true;
-      });
-      var url = "$baseurl/api/perpanjangan?nrkb=${data.nrkb}";
-      var response = await http.get(url);
-      // print(response.body);
-      if (response.statusCode == 200) {
-        var items = json.decode(response.body);
-        setState(() {
-          return users = items;
-          //isLoading = false;
-        });
-      } else {
-        users = null;
-        isLoading = false;
-      }
-    }
-
-    upload() async {
-      print('start uploading');
-      setStatus('Start Uploading...');
-      await fetchUser();
-      if (users == null) {
-        http
-            .post(
-          uploadEndPoint,
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(data.toMap()),
-        )
-            .then((result) {
-          print(result.statusCode);
-          setStatus(result.statusCode == 200 ? succMessage : errMessage);
-          // setStatus(result.body);
-        }).catchError((error) {
-          setStatus(error);
-        });
-      } else if (users != null) {
-        http
-            .put(
-          "$baseurl/api/perpanjangan/${users[0]['_id']}",
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(data.toMap()),
-        )
-            .then((result) {
-          print(result.statusCode);
-          setStatus(result.statusCode == 200 ? succMessage : errMessage);
-          // setStatus(result.body);
-        }).catchError((error) {
-          setStatus(error);
-        });
-      }
-    }
 
     Widget showImage(file) {
       return FutureBuilder<File>(
@@ -170,20 +116,23 @@ class Form6State extends State<Form6> {
       appBar: AppBar(
         title: Text("Upload NomorRangka"),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.navigate_next),
-          onPressed: () {
-            upload();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Selesai(),
-                settings: RouteSettings(
-                  arguments: data,
+      floatingActionButton: Visibility(
+        visible: isVisible,
+        child: FloatingActionButton.extended(
+            label: Text('Upload Data'),
+            icon: Icon(Icons.navigate_next),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Selesai(),
+                  settings: RouteSettings(
+                    arguments: data,
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
       body: ListView(
         padding: EdgeInsets.all(30.0),
         children: <Widget>[
@@ -200,7 +149,7 @@ class Form6State extends State<Form6> {
             onPressed: () async {
               await chooseImage();
             },
-            child: Text('Ambil Foto NomorRangka'),
+            child: Text(ambilTeks),
           ),
           SizedBox(
             height: 20.0,
@@ -209,14 +158,6 @@ class Form6State extends State<Form6> {
           SizedBox(
             height: 20.0,
           ),
-
-          // Upload
-          // OutlinedButton(
-          //   onPressed: () {
-          //     upload();
-          //   },
-          //   child: Text('Unggah Gambar'),
-          // ),
           SizedBox(
             height: 20.0,
           ),
