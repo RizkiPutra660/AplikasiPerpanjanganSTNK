@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+Enkripsi dan Dekripsi dengan Arnold Henon Map/
 
 # Web related
 lib/generated_plugin_registrant.dart

@@ -5,10 +5,10 @@ import 'package:sambara/class/endpoint.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 String uploadEndPoint = "$baseurl/api/perpanjangan";
 String baseurl = Endpoint().endpoint;
 List users;
+final routes = {'/home': (BuildContext context) => new Home()};
 
 class Selesai extends StatefulWidget {
   @override
@@ -22,11 +22,11 @@ class SelesaiState extends State<Selesai> {
   Widget build(BuildContext context) {
     final FormSTNK data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Selesai Pendaftaran"),
-          centerTitle: true,
-        ),
-        body: showData(data),
+      appBar: AppBar(
+        title: Text("Selesai Pendaftaran"),
+        centerTitle: true,
+      ),
+      body: showData(data),
     );
   }
 
@@ -35,23 +35,19 @@ class SelesaiState extends State<Selesai> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset('Gambar/Finish.gif'),
-              Text(
-                  ' Pendaftaran anda sudah selesai \n Silahkan klik menu "Cek Status" pada halaman utama secara berkala',
-                  textAlign: TextAlign.center),
-              OutlinedButton(
-                  child: Text('Kembali ke Halaman Utama'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Home(),
-                        settings: RouteSettings(),
-                      ),
-                    );
-                  }),
-            ]));
+          Image.asset('Gambar/Finish.gif'),
+          Text(
+              ' Pendaftaran anda sudah selesai \n Silahkan klik menu "Cek Status" pada halaman utama secara berkala',
+              textAlign: TextAlign.center),
+          OutlinedButton(
+              child: Text('Kembali ke Halaman Utama'),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
+              }),
+        ]));
   }
+
   Widget uploadLoading() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +89,7 @@ class SelesaiState extends State<Selesai> {
       print('Fetching user');
       print(users.isEmpty);
       if (users.isEmpty) {
-        response  = await http.post(
+        response = await http.post(
           uploadEndPoint,
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
@@ -101,7 +97,7 @@ class SelesaiState extends State<Selesai> {
           body: jsonEncode(data.toMap()),
         );
       } else {
-        response  = await http.put(
+        response = await http.put(
           "$uploadEndPoint/${users[0]['_id']}",
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
@@ -117,7 +113,7 @@ class SelesaiState extends State<Selesai> {
         throw Exception();
       }
     }
-    
+
     return FutureBuilder<FormSTNK>(
         future: postData(),
         builder: (context, snapshot) {
@@ -125,13 +121,27 @@ class SelesaiState extends State<Selesai> {
             return uploadSelesai();
           } else if (snapshot.hasError) {
             print(snapshot.error);
-            return Text(
-              "Error",
-              textAlign: TextAlign.center,
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Upload Error, silahkan mengupload kembali",
+                      textAlign: TextAlign.center,
+                    ),
+                    OutlinedButton(
+                        child: (Text('Upload Ulang')),
+                        onPressed: () {
+                          setState(() {});
+                        }),
+                  ],
+                )
+              ],
             );
           }
           return uploadLoading();
         });
   }
 }
-
