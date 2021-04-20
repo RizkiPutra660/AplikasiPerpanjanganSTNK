@@ -94,7 +94,7 @@ class Form1State extends State<Form1> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
-                    labelText: 'NIK/TDP',
+                    labelText: 'NIK',
                     // hintText: '',
                   ),
                   onChanged: (val) {
