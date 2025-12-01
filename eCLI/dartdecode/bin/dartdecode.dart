@@ -13,7 +13,7 @@ void main(List<String> arguments) async {
   var nrkb = stdin.readLineSync();
 
   try {
-    await dartdecode.fetchData(nrkb: nrkb).then((value) => data = value);
+    await dartdecode.fetchData(nrkb: nrkb ?? '').then((value) => data = value);
   } catch (e) {
     print('\n$e\n');
     return;

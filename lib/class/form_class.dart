@@ -1,5 +1,5 @@
 class FormSTNK {
-  String nrkb,
+  String? nrkb,
       nama,
       nik,
       alamat,
@@ -11,22 +11,23 @@ class FormSTNK {
       fotoSTNK,
       fotoNomorRangka,
       id;
-  bool sudahBayar;
+  bool? sudahBayar;
 
-  FormSTNK(
-      {this.nrkb,
-      this.nama,
-      this.nik,
-      this.alamat,
-      this.jenisKendaraan,
-      this.noRangka,
-      this.noTelp,
-      this.fotoKTP,
-      this.fotoBPKB,
-      this.fotoSTNK,
-      this.fotoNomorRangka,
-      this.sudahBayar,
-      this.id});
+  FormSTNK({
+    this.nrkb,
+    this.nama,
+    this.nik,
+    this.alamat,
+    this.jenisKendaraan,
+    this.noRangka,
+    this.noTelp,
+    this.fotoKTP,
+    this.fotoBPKB,
+    this.fotoSTNK,
+    this.fotoNomorRangka,
+    this.sudahBayar,
+    this.id,
+  });
 
   bool isFull() {
     int _cnt = 0;

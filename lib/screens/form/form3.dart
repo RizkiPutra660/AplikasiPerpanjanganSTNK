@@ -10,12 +10,12 @@ import 'package:sambara/mapper.dart';
 import 'package:image/image.dart' as im;
 import 'package:path_provider/path_provider.dart';
 
-Directory directory;
-String appDocumentsDirectory;
-String savepath;
-String mappedsavepath;
+late Directory directory;
+late String appDocumentsDirectory;
+late String savepath;
+late String mappedsavepath;
 String baseurl = Endpoint().endpoint;
-Future<List> futureMap;
+late Future<List> futureMap;
 String filecache = "cache1.png";
 String mappedcache = "cacheM1.png";
 bool isVisible = false;
@@ -30,19 +30,20 @@ class Form3 extends StatefulWidget {
 
 class Form3State extends State<Form3> {
   static final String uploadEndPoint = "$baseurl/api/perpanjangan";
-  Future<File> fileKTP;
+  Future<File>? fileKTP;
   String status = '';
-  String base64KTP;
-  File tmpFile;
+  String? base64KTP;
+  File? tmpFile;
   String errMessage = 'Pengunggahan Gambar Gagal';
   String succMessage = 'Gambar Berhasil Diunggah';
-  List users;
+  List? users;
   bool isLoading = false;
 
   chooseImage() async {
+    final picker = ImagePicker();
     setState(() {
-      fileKTP = ImagePicker.pickImage(
-          source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      fileKTP = picker.pickImage(
+          source: ImageSource.camera, maxHeight: 300, maxWidth: 400).then((xfile) => xfile != null ? File(xfile.path) : throw Exception('No image'));
       isVisible = true;
       ambilTeks = 'Ambil Ulang Foto KTP';
     });
@@ -56,11 +57,15 @@ class Form3State extends State<Form3> {
     print(savepath);
     print(mappedsavepath);
 
-    await fileKTP.then((value) => tmpFile = value);
-    im.Image image = im.grayscale(im.decodeImage(tmpFile.readAsBytesSync()));
+    await fileKTP!.then((value) => tmpFile = value);
+    final decodedImage = im.decodeImage(tmpFile!.readAsBytesSync());
+    if (decodedImage == null) return;
+    im.Image image = im.grayscale(decodedImage);
     File(savepath).writeAsBytesSync(im.encodePng(image));
-    List map;
-    await futureMap.then((value) => map = value);
+    List? mapNullable;
+    await futureMap.then((value) => mapNullable = value);
+    if (mapNullable == null) return;
+    final List map = mapNullable as List;
     im.Image mapped = mapping(image, map);
     File(mappedsavepath).writeAsBytesSync(im.encodePng(mapped));
   }
@@ -81,7 +86,7 @@ class Form3State extends State<Form3> {
   }
 
   Widget build(BuildContext context) {
-    final FormSTNK data = ModalRoute.of(context).settings.arguments;
+    final FormSTNK data = ModalRoute.of(context)?.settings.arguments as FormSTNK;
 
 
     Widget showImage(file) {
@@ -90,11 +95,11 @@ class Form3State extends State<Form3> {
         builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               null != snapshot.data) {
-            tmpFile = snapshot.data;
+            tmpFile = snapshot.data!;
             data.fotoKTP = base64Encode(File(mappedsavepath).readAsBytesSync());
             // data.fotoKTP = base64Encode(snapshot.data.readAsBytesSync());
             return Image.file(
-              snapshot.data,
+              snapshot.data!,
               fit: BoxFit.fill,
             );
           } else if (null != snapshot.error) {

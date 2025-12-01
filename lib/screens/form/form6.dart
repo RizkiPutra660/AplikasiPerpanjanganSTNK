@@ -10,12 +10,12 @@ import 'package:sambara/mapper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as im;
 
-Directory directory;
-String appDocumentsDirectory;
-String savepath;
-String mappedsavepath;
+late Directory directory;
+late String appDocumentsDirectory;
+late String savepath;
+late String mappedsavepath;
 String baseurl = Endpoint().endpoint;
-Future<List> futureMap;
+late Future<List> futureMap;
 String filecache = "cache4.png";
 String mappedcache = "cacheM4.png";
 bool isVisible = false;
@@ -30,19 +30,20 @@ class Form6 extends StatefulWidget {
 
 class Form6State extends State<Form6> {
   static final String uploadEndPoint = "$baseurl/api/perpanjangan";
-  Future<File> fileNomorRangka;
+  Future<File>? fileNomorRangka;
   String status = '';
-  String base64NomorRangka;
-  File tmpFile;
+  String? base64NomorRangka;
+  File? tmpFile;
   String errMessage = 'Pengunggahan Gambar Gagal';
   String succMessage = 'Gambar Berhasil Diunggah';
-  List users;
+  List? users;
   bool isLoading = false;
 
   chooseImage() async {
+    final picker = ImagePicker();
     setState(() {
-      fileNomorRangka = ImagePicker.pickImage(
-          source: ImageSource.camera, maxHeight: 300, maxWidth: 400);
+      fileNomorRangka = picker.pickImage(
+          source: ImageSource.camera, maxHeight: 300, maxWidth: 400).then((xfile) => xfile != null ? File(xfile.path) : throw Exception('No image'));
       isVisible = true;
       ambilTeks = 'Ambil Ulang Foto Nomor Rangka';
     });
@@ -56,11 +57,15 @@ class Form6State extends State<Form6> {
     print(savepath);
     print(mappedsavepath);
 
-    await fileNomorRangka.then((value) => tmpFile = value);
-    im.Image image = im.grayscale(im.decodeImage(tmpFile.readAsBytesSync()));
+    await fileNomorRangka!.then((value) => tmpFile = value);
+    final decodedImage = im.decodeImage(tmpFile!.readAsBytesSync());
+    if (decodedImage == null) return;
+    im.Image image = im.grayscale(decodedImage);
     File(savepath).writeAsBytesSync(im.encodePng(image));
-    List map;
-    await futureMap.then((value) => map = value);
+    List? mapNullable;
+    await futureMap.then((value) => mapNullable = value);
+    if (mapNullable == null) return;
+    final List map = mapNullable as List;
     im.Image mapped = mapping(image, map);
     File(mappedsavepath).writeAsBytesSync(im.encodePng(mapped));
   }
@@ -81,7 +86,7 @@ class Form6State extends State<Form6> {
   }
 
   Widget build(BuildContext context) {
-    final FormSTNK data = ModalRoute.of(context).settings.arguments;
+    final FormSTNK data = ModalRoute.of(context)?.settings.arguments as FormSTNK;
 
     Widget showImage(file) {
       return FutureBuilder<File>(
@@ -89,12 +94,12 @@ class Form6State extends State<Form6> {
         builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               null != snapshot.data) {
-            tmpFile = snapshot.data;
+            tmpFile = snapshot.data!;
             data.fotoNomorRangka =
                 base64Encode(File(mappedsavepath).readAsBytesSync());
             // data.fotoNomorRangka = base64Encode(snapshot.data.readAsBytesSync());
             return Image.file(
-              snapshot.data,
+              snapshot.data!,
               fit: BoxFit.fill,
             );
           } else if (null != snapshot.error) {

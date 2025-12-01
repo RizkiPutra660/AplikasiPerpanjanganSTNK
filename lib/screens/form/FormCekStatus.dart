@@ -1,6 +1,5 @@
 // Isi Identitas
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sambara/class/form_class.dart';
 import 'package:sambara/screens/CekStatus.dart';
 
@@ -28,7 +27,7 @@ class FormCekStatusState extends State<FormCekStatus> {
           floatingActionButton: FloatingActionButton(
               child: Icon(Icons.navigate_next),
               onPressed: () {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState?.validate() ?? false) {
                   print("${data.nrkb}");
                   Navigator.push(
                     context,
@@ -57,14 +56,12 @@ class FormCekStatusState extends State<FormCekStatus> {
                       data.nrkb = val;
                     });
                   },
-                  validator: (String val) {
-                    // return val.contains('@') ? 'Do not use the @ char.' : null;
-                    Pattern pat = r'^[A-Z]{1,2}\s[1-9][0-9]{1,3}\s[A-Z]{1,3}$';
-                    RegExp regex = new RegExp(pat);
-                    if (!regex.hasMatch(val))
-                      return 'Nomor tidak valid';
-                    else
-                      return null;
+                  validator: (String? val) {
+                    if (val == null) return 'Nomor tidak valid';
+                    String pat = r'^[A-Z]{1,2}\s[1-9][0-9]{1,3}\s[A-Z]{1,3}$';
+                    RegExp regex = RegExp(pat);
+                    if (!regex.hasMatch(val)) return 'Nomor tidak valid';
+                    return null;
                   },
                 ),
                 SizedBox(

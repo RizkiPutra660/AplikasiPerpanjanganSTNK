@@ -10,7 +10,7 @@ const String PanduanPDF = 'PDF/Panduan.pdf';
 const String FAQPDF = 'PDF/FAQ.pdf';
 
 class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();

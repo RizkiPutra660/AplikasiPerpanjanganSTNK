@@ -25,7 +25,7 @@ class HttpState extends State<Http> {
                   children: <Widget>[
                     Card(
                       child: Text(
-                          " NIK : ${identitas.nik} \n Nama : ${identitas.nama} \n NRKB : ${identitas.nrkb} \n Alamat : ${identitas.alamat} \n Jenis Kendaraan : ${identitas.jenisKendaraan} \n Nomor Rangka : ${identitas.noRangka}"),
+                          " NIK : ${identitas?.nik} \n Nama : ${identitas?.nama} \n NRKB : ${identitas?.nrkb} \n Alamat : ${identitas?.alamat} \n Jenis Kendaraan : ${identitas?.jenisKendaraan} \n Nomor Rangka : ${identitas?.noRangka}"),
                     ),
                     OutlinedButton(
                         child: Text('Lanjutkan ke Upload Gambar'),
@@ -66,7 +66,7 @@ class HttpState extends State<Http> {
 Future<FormSTNK> getData() async {
   final url =
       "https://stnk-api-ta.tech/api/verify?nrkb=${data.nrkb}&nik=${data.nik}";
-  final response = await http.get(url);
+  final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
     final jsonData = jsonDecode(response.body);

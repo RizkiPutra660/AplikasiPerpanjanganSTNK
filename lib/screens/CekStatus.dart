@@ -18,7 +18,7 @@ class CekStatusState extends State<CekStatus> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final identitas = snapshot.data;
-            if (identitas.sudahBayar == true) {
+            if (identitas?.sudahBayar == true) {
               return Container(
                   padding: EdgeInsets.all(30.0),
                   child: ListView(
@@ -29,7 +29,7 @@ class CekStatusState extends State<CekStatus> {
                       ),
                     ],
                   ));
-            } else if (identitas.sudahBayar == false) {
+            } else if (identitas?.sudahBayar == false) {
               return Container(
                   padding: EdgeInsets.all(30.0),
                   child: ListView(
@@ -69,7 +69,7 @@ class CekStatusState extends State<CekStatus> {
 
 Future<FormSTNK> getData() async {
   final url = "https://stnk-api-ta.tech/api/perpanjangan?nrkb=${data.nrkb}";
-  final response = await http.get(url);
+  final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
     final jsonData = jsonDecode(response.body);

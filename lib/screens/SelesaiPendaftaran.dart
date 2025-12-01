@@ -5,9 +5,9 @@ import 'package:sambara/class/endpoint.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String uploadEndPoint = "$baseurl/api/perpanjangan";
 String baseurl = Endpoint().endpoint;
-List users;
+String uploadEndPoint = "$baseurl/api/perpanjangan";
+late List<dynamic> users;
 final routes = {'/home': (BuildContext context) => new Home()};
 
 class Selesai extends StatefulWidget {
@@ -20,7 +20,7 @@ class Selesai extends StatefulWidget {
 class SelesaiState extends State<Selesai> {
   @override
   Widget build(BuildContext context) {
-    final FormSTNK data = ModalRoute.of(context).settings.arguments;
+    final FormSTNK data = ModalRoute.of(context)?.settings.arguments as FormSTNK;
     return Scaffold(
       appBar: AppBar(
         title: Text("Selesai Pendaftaran"),
@@ -73,12 +73,12 @@ class SelesaiState extends State<Selesai> {
   Widget showData(FormSTNK data) {
     Future<List> fetchUser() async {
       var url = "$baseurl/api/perpanjangan?nrkb=${data.nrkb}";
-      var response = await http.get(url);
+      var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         var items = json.decode(response.body);
-        return items;
+        return items as List<dynamic>;
       } else {
-        return null;
+        return <dynamic>[];
       }
     }
 
@@ -90,7 +90,7 @@ class SelesaiState extends State<Selesai> {
       print(users.isEmpty);
       if (users.isEmpty) {
         response = await http.post(
-          uploadEndPoint,
+          Uri.parse(uploadEndPoint),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -98,7 +98,7 @@ class SelesaiState extends State<Selesai> {
         );
       } else {
         response = await http.put(
-          "$uploadEndPoint/${users[0]['_id']}",
+          Uri.parse("$uploadEndPoint/${users[0]['_id']}") ,
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
           },

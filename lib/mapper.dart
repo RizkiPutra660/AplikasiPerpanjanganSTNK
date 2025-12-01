@@ -6,21 +6,20 @@ import 'dart:typed_data';
 import 'package:sambara/class/endpoint.dart';
 final baseurl = Endpoint().endpoint;
 
-im.Image readImage(String path) {
+im.Image? readImage(String path) {
   var imageData = File(path).readAsBytesSync();
-  List<int> bytes = Uint8List.view(imageData.buffer);
+  Uint8List bytes = Uint8List.view(imageData.buffer);
   var image = im.decodePng(bytes);
   return image;
 }
 
-Future<List> fetchMap({int width, int height}) async {
+Future<List> fetchMap({int width = 400, int height = 300}) async {
 
   print('Fetching Map...');
   String mapEndPoint = "$baseurl/api/map?q=H&width=$width&height=$height";
 
 
-  var res =
-  await http.get(mapEndPoint);
+  var res = await http.get(Uri.parse(mapEndPoint));
   if (res.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.

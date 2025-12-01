@@ -27,7 +27,7 @@ class Form1State extends State<Form1> {
           floatingActionButton: FloatingActionButton(
               child: Icon(Icons.navigate_next),
               onPressed: () {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState?.validate() ?? false) {
                   print('Form1->Form3, data: ${data.toString()}');
                   Navigator.push(
                     context,
@@ -56,13 +56,13 @@ class Form1State extends State<Form1> {
                       data.nrkb = val;
                     });
                   },
-                  validator: (String val) {
-                    Pattern pat = r'^[A-Z]{1,2}\s[1-9][0-9]{1,3}\s[A-Z]{1,3}$';
-                    RegExp regex = new RegExp(pat);
+                  validator: (String? val) {
+                    if (val == null) return 'Nomor tidak valid';
+                    String pat = r'^[A-Z]{1,2}\s[1-9][0-9]{1,3}\s[A-Z]{1,3}$';
+                    RegExp regex = RegExp(pat);
                     if (!regex.hasMatch(val))
                       return 'Nomor tidak valid';
-                    else
-                      return null;
+                    return null;
                   },
                 ),
                 SizedBox(
@@ -102,8 +102,8 @@ class Form1State extends State<Form1> {
                       data.nik = val;
                     });
                   },
-                  validator: (val) {
-                    if (val.length != 16) {
+                  validator: (String? val) {
+                    if (val == null || val.length != 16) {
                       return 'NIK tidak sesuai (Harus terdiri dari 16 angka)';
                     }
                     return null;

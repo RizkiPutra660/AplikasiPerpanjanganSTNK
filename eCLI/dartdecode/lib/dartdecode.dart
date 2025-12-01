@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-im.Image readImage(String path) {
+im.Image? readImage(String path) {
   var imageData = File(path).readAsBytesSync();
-  List<int> bytes = Uint8List.view(imageData.buffer);
+  var bytes = Uint8List.view(imageData.buffer);
   var image = im.decodePng(bytes);
   return image;
 }
 
-Future<List> fetchMap({int width, int height}) async {
+Future<List> fetchMap({int width = 400, int height = 300}) async {
   // print('\nFetching Map...');
   var authority = 'stnk-api-ta.tech';
   var unencodedPath = 'api/map';
@@ -55,7 +55,7 @@ im.Image mapping(im.Image src, List map) {
   return src;
 }
 
-Future<Map> fetchData({String nrkb}) async {
+Future<Map> fetchData({required String nrkb}) async {
   print('\nFetching Data...');
   var authority = 'stnk-api-ta.tech';
   var unencodedPath = 'api/perpanjangan';
@@ -95,11 +95,12 @@ void imageSaver(String filename, Map data, List map) async {
   await File(enPath)
       .create(recursive: true)
       .then((File file) => file.writeAsBytesSync(byte));
-  var image = readImage(enPath);
-  var mapped = mapping(image, map);
+  var decodedImage = readImage(enPath);
+  if (decodedImage == null) return;
+  var mapped = mapping(decodedImage, map);
   await File(dePath)
       .create(recursive: true)
       .then((File file) => file.writeAsBytesSync(im.encodePng(mapped)));
-  print('$filename saved to \"$enPath\"');
-  print('decrypted $filename saved to \"$dePath\"\n');
+  print('$filename saved to "$enPath"');
+  print('decrypted $filename saved to "$dePath"\n');
 }

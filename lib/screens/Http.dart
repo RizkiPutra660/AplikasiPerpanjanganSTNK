@@ -20,7 +20,7 @@ class Http extends StatefulWidget {
 class HttpState extends State<Http> {
   @override
   Widget build(BuildContext context) {
-    final FormSTNK data = ModalRoute.of(context).settings.arguments;
+    final FormSTNK data = ModalRoute.of(context)?.settings.arguments as FormSTNK;
     print(data.toString());
     return Scaffold(
         appBar: AppBar(
@@ -33,7 +33,7 @@ class HttpState extends State<Http> {
     Future<FormSTNK> getData() async {
       final url = "$baseurl/api/verify?nrkb=${data.nrkb}&nik=${data.nik}";
       print(url);
-      final response = await http.get(url);
+      final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
@@ -47,7 +47,7 @@ class HttpState extends State<Http> {
         future: getData(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            FormSTNK data = snapshot.data;
+            FormSTNK data = snapshot.data!;
             return Container(
                 padding: EdgeInsets.all(30.0),
                 child: ListView(
